@@ -13,7 +13,7 @@ public class Campo_Minado extends JFrame implements ActionListener {
 
     private Random random;
     private int tentativaAtual;
-    private final int NUMERO_MAXIMO_TENTATIVAS = 5;
+    private int z = 0 ;
 
     public Campo_Minado() {
         setTitle("Campo Minado");
@@ -34,14 +34,6 @@ public class Campo_Minado extends JFrame implements ActionListener {
         }
         add(panelBotoes);
 
-        // Cria e adiciona o campo de texto à janela
-        JPanel panelTentativa = new JPanel(new FlowLayout());
-        JLabel labelTentativa = new JLabel("Tentativa atual:");
-        textFieldTentativa = new JTextField(2);
-        textFieldTentativa.setEditable(false);
-        panelTentativa.add(labelTentativa);
-        panelTentativa.add(textFieldTentativa);
-        add(panelTentativa);
 
         // Cria e adiciona o rótulo de resultado à janela
         JPanel panelResultado = new JPanel(new FlowLayout());
@@ -64,8 +56,7 @@ public class Campo_Minado extends JFrame implements ActionListener {
         // Inicializa as variáveis
         random = new Random();
         tabuleiro = new boolean[8][8];
-        tentativaAtual = 1;
-        textFieldTentativa.setText(String.valueOf(tentativaAtual));
+
 
         // Atribui aleatoriamente as minas ao tabuleiro
         for (int i = 0; i < 8; i++) {
@@ -77,13 +68,7 @@ public class Campo_Minado extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // Verifica se ainda há tentativas disponíveis
-        if (tentativaAtual >= NUMERO_MAXIMO_TENTATIVAS) {
-            labelResultado.setText("Você excedeu o número máximo de tentativas!");
-
-            return;
-        }
-
+        if (z != 1){
         // Verifica se a célula clicada contém uma mina
         JButton botaoClicado = (JButton) e.getSource();
         int linha = -1, coluna = -1;
@@ -100,14 +85,14 @@ public class Campo_Minado extends JFrame implements ActionListener {
         if (tabuleiro[linha][coluna]) {
             labelResultado.setText("Você encontrou uma mina!");
             botaoClicado.setBackground(Color.RED);
+            z = 1;
+            return;
         } else {
             labelResultado.setText("Não há mina nessa célula!");
             botaoClicado.setBackground(Color.GREEN);
-        }
+        }}
     
-        // Atualiza a tentativa atual
-        tentativaAtual++;
-        textFieldTentativa.setText(String.valueOf(tentativaAtual));
+
     }
     
     private void reiniciarJogo() {
@@ -118,9 +103,7 @@ public class Campo_Minado extends JFrame implements ActionListener {
                 tabuleiro[i][j] = random.nextBoolean();
             }
         }
-        tentativaAtual = 1;
-        textFieldTentativa.setText(String.valueOf(tentativaAtual));
-        labelResultado.setText("");
+        z = 0;
     }
     
     public static void main(String[] args) {
